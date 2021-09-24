@@ -4,7 +4,7 @@ import numpy as np
 
 
 import get_csv
-import matplotlib.ticker as ticker
+
 
 
 def get_alerts(tick,period):
