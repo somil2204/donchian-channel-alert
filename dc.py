@@ -76,6 +76,6 @@ def get_alerts(tick,period):
     if len(alert_date)>0:
 
         print([tick,alert_date[-1]])
-        return ([tick,alert_date[-1]])
+        return ([tick,str(alert_date[-1])])
     else:
         return ["null","null"]    

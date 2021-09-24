@@ -4,6 +4,7 @@ import get_csv
 from datetime import datetime
 import streamlit as st
 import csv
+import streamlit as st 
 import pandas as pd
 
 shares =[
@@ -1729,10 +1730,15 @@ shares =[
     ]
 
 
-a_file = open("sample.csv", "w")
-writer = csv.writer(a_file)
-writer.writerow(["symbol","date"])
+table=st.empty()
+ls=[]
+#a_file = open("sample.csv", "w")
+#writer = csv.writer(a_file)
+#writer.writerow(["symbol","date"])
 for i in range(len(shares)):
-    writer.writerow(dc.get_alerts(shares[i],10))
-    
-a_file.close()    
+    x=dc.get_alerts(shares[i],10)
+    ls.append(x)
+    df=pd.DataFrame(ls, columns =['symbol', 'last date'])
+    #writer.writerow(x)
+    table.write(df)
+#a_file.close()    
