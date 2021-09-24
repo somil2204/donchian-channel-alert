@@ -1741,5 +1741,5 @@ for i in range(len(shares)):
     ls=list(filter(lambda x: x, ls))
     df=pd.DataFrame(ls, columns =['symbol', 'last date'])
     #writer.writerow(x)
-    table.write(df)
+    table.dataframe(df)
 #a_file.close()    
