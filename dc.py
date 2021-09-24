@@ -1,12 +1,11 @@
 import pandas as pd
-import plotly.graph_objects as go
+
 import numpy as np
-from matplotlib import pyplot as plt
-import matplotlib.ticker as mticker
-import matplotlib.dates as mdates
+
+
 import get_csv
 import matplotlib.ticker as ticker
-from matplotlib.dates import DateFormatter, MinuteLocator
+
 
 def get_alerts(tick,period):
     tick=str(tick)
