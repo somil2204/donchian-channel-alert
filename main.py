@@ -1738,6 +1738,7 @@ ls=[]
 for i in range(len(shares)):
     x=dc.get_alerts(shares[i],10)
     ls.append(x)
+    ls=list(filter(lambda x: x, ls))
     df=pd.DataFrame(ls, columns =['symbol', 'last date'])
     #writer.writerow(x)
     table.write(df)

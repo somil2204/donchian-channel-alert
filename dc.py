@@ -77,4 +77,4 @@ def get_alerts(tick,period):
         print([tick,alert_date[-1]])
         return ([tick,str(alert_date[-1])])
     else:
-        return ["null","12-1-1980"]    
+        return []    
