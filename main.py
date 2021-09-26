@@ -1736,10 +1736,10 @@ ls=[]
 #writer = csv.writer(a_file)
 #writer.writerow(["symbol","date"])
 for i in range(len(shares)):
-    x=dc.get_alerts(shares[i],10)
+    x=dc.get_alerts(shares[i],50)
     ls.append(x)
     ls=list(filter(lambda x: x, ls))
-    df=pd.DataFrame(ls, columns =['symbol', 'last date'])
+    df=pd.DataFrame(ls, columns =['symbol', 'last alert date'])
     #writer.writerow(x)
     table.dataframe(df)
 #a_file.close()    
