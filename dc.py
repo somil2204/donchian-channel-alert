@@ -67,7 +67,7 @@ def get_alerts(tick,period):
     alert=[]
     alert_date=[]
     for i in range(len(array_close)):
-        if array_close[i]>array_upper[i-1]:
+        if array_high[i]>=array_upper[i-1]:
             alert.append(array_close[i])
             alert_date.append(array_date[i])
          
