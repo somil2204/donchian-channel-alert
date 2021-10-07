@@ -1728,19 +1728,20 @@ shares =[
     'ZYDUSWELL',
     ]
 
-
+period=st.text_input("Enter period like 20,30,50")
 table=st.empty()
-ls=[]
+if st.button("Submit"):
+    ls=[]
 #a_file = open("sample.csv", "w")
 #writer = csv.writer(a_file)
 #writer.writerow(["symbol","date"])
-for i in range(len(shares)):
-    x=dc.get_alerts(shares[i],50)
-    ls.append(x)
-    ls=list(filter(lambda x: x, ls))
-    df=pd.DataFrame(ls, columns =['symbol', 'last alert date'])
+    for i in range(len(shares)):
+        x=dc.get_alerts(shares[i],int(period))
+        ls.append(x)
+        ls=list(filter(lambda x: x, ls))
+        df=pd.DataFrame(ls, columns =['symbol', 'last alert date'])
     #writer.writerow(x)
-    table.dataframe(df)
+        table.dataframe(df)
 
 
 #a_file.close()    
