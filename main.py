@@ -1762,8 +1762,9 @@ if category=="fno":
 else:
     shares=all_shares    
 table=st.empty()
+ls=[]
 if st.sidebar.button("Submit"):
-    ls=[]
+    
 #a_file = open("sample.csv", "w")
 #writer = csv.writer(a_file)
 #writer.writerow(["symbol","date"])
