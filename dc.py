@@ -7,9 +7,9 @@ import get_csv
 
 
 
-def get_alerts(tick,period):
+def get_alerts(tick,period,pr,interval):
     tick=str(tick)
-    df = get_csv.get_csv1(tick)
+    df = get_csv.get_csv1(tick,pr,interval)
     period=period
 
     array_date = pd.to_datetime(df.index).date

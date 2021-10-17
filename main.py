@@ -5,8 +5,8 @@ from datetime import datetime
 import streamlit as st
 import streamlit as st 
 import pandas as pd
-
-shares =[
+fno=['ABFRL','ACC','ABBOTINDIA','AARTIIND','ADANIENT','ADANIPORTS','ALKEM','AMARAJABAT','APLLTD','APOLLOTYRE','ASHOKLEY','ASIANPAINT','AUBANK','AUROPHARMA','AXISBANK','BAJAJ-AUTO','BAJAJFINSV','BAJFINANCE','BALKRISIND','BANDHANBNK','BEL','BERGEPAINT','BHARATFORG','BHARTIARTL','BHEL','BPCL','BRITANNIA','CADILAHC','CANBK','CHOLAFIN','CIPLA','COFORGE','CONCOR','APOLLOHOSP','COROMANDEL','CUMMINSIND','CANFINHOME','DABUR','ASTRAL','DEEPAKNTR','GODREJCP','BATAINDIA','HAL','DIVISLAB','DRREDDY','ESCORTS','EXIDEIND','FEDERALBNK','GAIL','GLENMARK','HDFCAMC','GODREJPROP','HINDUNILVR','GRANULES','GRASIM','HCLTECH','HDFC','ICICIGI','HINDALCO','HINDPETRO','ICICIBANK','ICICIPRULI','IGL','INDHOTEL','INDIGO','INDUSINDBK','IOC','BOSCHLTD','IEX','IRCTC','JINDALSTEL','JSWSTEEL','JUBLFOOD','KOTAKBANK','LALPATHLAB','LTI','LUPIN','M&M','IPCALAB','MARICO','METROPOLIS','MGL','COALINDIA','MINDTREE','MOTHERSUMI','MPHASIS','MRF','CROMPTON','LTTS','NATIONALUM','NAVINFLUOR','NESTLEIND','NMDC','NTPC','PETRONET','PFC','PIDILITIND','PNB','POWERGRID','PVR','RAMCOCEM','RBLBANK','RECLTD','RELIANCE','DELTACORP','SBILIFE','SBIN','SHREECEM','DIXON','SRF','NAUKRI','EICHERMOT','SRTRANSFIN','OFSS','POLYCAB','GMRINFRA','SUNPHARMA','GUJGASLTD','SUNTV','TATACHEM','TCS','TATACONSUM','TATAPOWER','TORNTPOWER','TATASTEEL','HDFCLIFE','TECHM','IBULHSGFIN','TITAN','TORNTPHARM','TVSMOTOR','ULTRACEMCO','UPL','VEDL','VOLTAS','ZEEL','INFY','JKCEMENT','L&TFH','AMBUJACEM','M&MFIN','MARUTI','MCDOWELL-N','NAM-INDIA','BIOCON','COLPAL','OBEROIRLTY','CUB','ONGC','PEL','PERSISTENT','PFIZER','DLF','PIIND','HEROMOTOCO','INDUSTOWER','TRENT','ITC','LT','MANAPPURAM','MFSL','MUTHOOTFIN','PAGEIND','SIEMENS','STAR','TATAMOTORS','BANKBARODA','INDIAMART','UBL','DALBHARAT','MCX','INDIACEM','SYNGENE','HAVELLS','HDFCBANK','LICHSGFIN','SAIL','WIPRO','IDFCFIRSTB','IDEA']
+all_shares =[
     '20MICRONS',
     '21STCENMGM',
     '3MINDIA',
@@ -1728,15 +1728,27 @@ shares =[
     'ZYDUSWELL',
     ]
 
-period=st.text_input("Enter period like 20,30,50")
+period=st.sidebar.text_input("Enter donchian period like 20,30,50")
+category=st.sidebar.selectbox('category',('fno', 'all'))
+type1=st.sidebar.selectbox('Select type',('Daily Stocks',"Short time"))
+if type1=='Daily Stocks':
+    pr="3mo"
+    interval="1d"
+else:
+    pr=st.sidebar.selectbox("time period",("5d","1mo",))
+    interval=st.sidebar.selectbox("candlestick interval",("15m","30m","60m","90m","1h","2h"))
+if category=="fno":
+    shares=fno
+else:
+    shares=all_shares    
 table=st.empty()
-if st.button("Submit"):
+if st.sidebar.button("Submit"):
     ls=[]
 #a_file = open("sample.csv", "w")
 #writer = csv.writer(a_file)
 #writer.writerow(["symbol","date"])
     for i in range(len(shares)):
-        x=dc.get_alerts(shares[i],int(period))
+        x=dc.get_alerts(shares[i],int(period),pr,interval)
         ls.append(x)
         ls=list(filter(lambda x: x, ls))
         df=pd.DataFrame(ls, columns =['symbol', 'last alert date'])
