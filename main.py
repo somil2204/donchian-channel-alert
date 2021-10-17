@@ -1,10 +1,30 @@
 
 import dc
 import numpy as np
+import time
 from datetime import datetime
 import streamlit as st
-import streamlit as st 
+import streamlit as st
+from googleapiclient.discovery import build 
+from google.oauth2 import service_account
 import pandas as pd
+
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+SERVICE_ACCOUNT_FILE = 'client_secret.json'
+creds= None
+creds = service_account.Credentials.from_service_account_file(
+        SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+
+
+SAMPLE_SPREADSHEET_ID = '1DsKhfztXsoeykooHZASdCKC64DU6Pulce7NGB-nlDh0'
+service = build('sheets', 'v4', credentials=creds)
+
+    # Call the Sheets API
+sheet = service.spreadsheets()
+def write_gsheet(data):
+    request = sheet.values().update(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="alerts!A2",
+                                                     valueInputOption="USER_ENTERED", body={"values":data}).execute()
+    time.sleep(0.5)
 fno=['ABFRL','ACC','ABBOTINDIA','AARTIIND','ADANIENT','ADANIPORTS','ALKEM','AMARAJABAT','APLLTD','APOLLOTYRE','ASHOKLEY','ASIANPAINT','AUBANK','AUROPHARMA','AXISBANK','BAJAJ-AUTO','BAJAJFINSV','BAJFINANCE','BALKRISIND','BANDHANBNK','BEL','BERGEPAINT','BHARATFORG','BHARTIARTL','BHEL','BPCL','BRITANNIA','CADILAHC','CANBK','CHOLAFIN','CIPLA','COFORGE','CONCOR','APOLLOHOSP','COROMANDEL','CUMMINSIND','CANFINHOME','DABUR','ASTRAL','DEEPAKNTR','GODREJCP','BATAINDIA','HAL','DIVISLAB','DRREDDY','ESCORTS','EXIDEIND','FEDERALBNK','GAIL','GLENMARK','HDFCAMC','GODREJPROP','HINDUNILVR','GRANULES','GRASIM','HCLTECH','HDFC','ICICIGI','HINDALCO','HINDPETRO','ICICIBANK','ICICIPRULI','IGL','INDHOTEL','INDIGO','INDUSINDBK','IOC','BOSCHLTD','IEX','IRCTC','JINDALSTEL','JSWSTEEL','JUBLFOOD','KOTAKBANK','LALPATHLAB','LTI','LUPIN','M&M','IPCALAB','MARICO','METROPOLIS','MGL','COALINDIA','MINDTREE','MOTHERSUMI','MPHASIS','MRF','CROMPTON','LTTS','NATIONALUM','NAVINFLUOR','NESTLEIND','NMDC','NTPC','PETRONET','PFC','PIDILITIND','PNB','POWERGRID','PVR','RAMCOCEM','RBLBANK','RECLTD','RELIANCE','DELTACORP','SBILIFE','SBIN','SHREECEM','DIXON','SRF','NAUKRI','EICHERMOT','SRTRANSFIN','OFSS','POLYCAB','GMRINFRA','SUNPHARMA','GUJGASLTD','SUNTV','TATACHEM','TCS','TATACONSUM','TATAPOWER','TORNTPOWER','TATASTEEL','HDFCLIFE','TECHM','IBULHSGFIN','TITAN','TORNTPHARM','TVSMOTOR','ULTRACEMCO','UPL','VEDL','VOLTAS','ZEEL','INFY','JKCEMENT','L&TFH','AMBUJACEM','M&MFIN','MARUTI','MCDOWELL-N','NAM-INDIA','BIOCON','COLPAL','OBEROIRLTY','CUB','ONGC','PEL','PERSISTENT','PFIZER','DLF','PIIND','HEROMOTOCO','INDUSTOWER','TRENT','ITC','LT','MANAPPURAM','MFSL','MUTHOOTFIN','PAGEIND','SIEMENS','STAR','TATAMOTORS','BANKBARODA','INDIAMART','UBL','DALBHARAT','MCX','INDIACEM','SYNGENE','HAVELLS','HDFCBANK','LICHSGFIN','SAIL','WIPRO','IDFCFIRSTB','IDEA']
 all_shares =[
     '20MICRONS',
@@ -1752,8 +1772,9 @@ if st.sidebar.button("Submit"):
         ls.append(x)
         ls=list(filter(lambda x: x, ls))
         df=pd.DataFrame(ls, columns =['symbol', 'last alert date'])
+        print(df)
     #writer.writerow(x)
         table.dataframe(df)
-
+        write_gsheet(ls)
 
 #a_file.close()    
