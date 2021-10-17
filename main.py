@@ -1775,7 +1775,7 @@ if st.sidebar.button("Submit"):
         print(df)
     #writer.writerow(x)
         table.dataframe(df)
-        write_gsheet(ls)
-        time.sleep(0.5)
-
+        
+        
+write_gsheet(ls)
 #a_file.close()    
