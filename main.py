@@ -1732,7 +1732,7 @@ period=st.sidebar.text_input("Enter donchian period like 20,30,50")
 category=st.sidebar.selectbox('category',('fno', 'all'))
 type1=st.sidebar.selectbox('Select type',('Daily Stocks',"Short time"))
 price_limit = st.sidebar.text_input("Enter min price limit for filtering stocks")
-price_limit
+
 if type1=='Daily Stocks':
     pr="3mo"
     interval="1d"
@@ -1750,7 +1750,7 @@ if st.sidebar.button("Submit"):
 #writer = csv.writer(a_file)
 #writer.writerow(["symbol","date"])
     for i in range(len(shares)):
-        x=dc.get_alerts(shares[i],int(period),pr,interval)
+        x=dc.get_alerts(shares[i],int(period),pr,interval,price_limit)
         ls.append(x)
         ls=list(filter(lambda x: x, ls))
         df=pd.DataFrame(ls, columns =['symbol', 'last alert date'])
