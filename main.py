@@ -1750,7 +1750,7 @@ if st.sidebar.button("Submit"):
 #writer = csv.writer(a_file)
 #writer.writerow(["symbol","date"])
     for i in range(len(shares)):
-        x=dc.get_alerts(shares[i],int(period),pr,interval,price_limit)
+        x=dc.get_alerts(shares[i],int(period),pr,interval,int(price_limit))
         ls.append(x)
         ls=list(filter(lambda x: x, ls))
         df=pd.DataFrame(ls, columns =['symbol', 'last alert date'])
