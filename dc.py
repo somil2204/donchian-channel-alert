@@ -18,7 +18,7 @@ def get_alerts(tick,period,pr,interval,price_limit):
     array_high = np.array(df['High'])
     array_low = np.array(df['Low'])
     #array_volume = np.array(df['No. of Trades'])
-    if price_limit < np.average(array_close[-20:]:
+    if price_limit < np.average(array_close[-20:]):
         return []                        
                                 
 
