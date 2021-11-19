@@ -1732,6 +1732,7 @@ period=st.sidebar.text_input("Enter donchian period like 20,30,50")
 category=st.sidebar.selectbox('category',('fno', 'all'))
 type1=st.sidebar.selectbox('Select type',('Daily Stocks',"Short time"))
 price_limit = st.sidebar.text_input("Enter min price limit for filtering stocks")
+price_limit
 if type1=='Daily Stocks':
     pr="3mo"
     interval="1d"
