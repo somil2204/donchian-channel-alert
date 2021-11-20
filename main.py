@@ -1,15 +1,12 @@
-import io
+
 import dc
 import numpy as np
-import get_csv
-import base64
 from datetime import datetime
 import streamlit as st
-import csv
 import streamlit as st 
 import pandas as pd
-
-shares =[
+fno=['ABFRL','ACC','ABBOTINDIA','AARTIIND','ADANIENT','ADANIPORTS','ALKEM','AMARAJABAT','APLLTD','APOLLOTYRE','ASHOKLEY','ASIANPAINT','AUBANK','AUROPHARMA','AXISBANK','BAJAJ-AUTO','BAJAJFINSV','BAJFINANCE','BALKRISIND','BANDHANBNK','BEL','BERGEPAINT','BHARATFORG','BHARTIARTL','BHEL','BPCL','BRITANNIA','CADILAHC','CANBK','CHOLAFIN','CIPLA','COFORGE','CONCOR','APOLLOHOSP','COROMANDEL','CUMMINSIND','CANFINHOME','DABUR','ASTRAL','DEEPAKNTR','GODREJCP','BATAINDIA','HAL','DIVISLAB','DRREDDY','ESCORTS','EXIDEIND','FEDERALBNK','GAIL','GLENMARK','HDFCAMC','GODREJPROP','HINDUNILVR','GRANULES','GRASIM','HCLTECH','HDFC','ICICIGI','HINDALCO','HINDPETRO','ICICIBANK','ICICIPRULI','IGL','INDHOTEL','INDIGO','INDUSINDBK','IOC','BOSCHLTD','IEX','IRCTC','JINDALSTEL','JSWSTEEL','JUBLFOOD','KOTAKBANK','LALPATHLAB','LTI','LUPIN','M&M','IPCALAB','MARICO','METROPOLIS','MGL','COALINDIA','MINDTREE','MOTHERSUMI','MPHASIS','MRF','CROMPTON','LTTS','NATIONALUM','NAVINFLUOR','NESTLEIND','NMDC','NTPC','PETRONET','PFC','PIDILITIND','PNB','POWERGRID','PVR','RAMCOCEM','RBLBANK','RECLTD','RELIANCE','DELTACORP','SBILIFE','SBIN','SHREECEM','DIXON','SRF','NAUKRI','EICHERMOT','SRTRANSFIN','OFSS','POLYCAB','GMRINFRA','SUNPHARMA','GUJGASLTD','SUNTV','TATACHEM','TCS','TATACONSUM','TATAPOWER','TORNTPOWER','TATASTEEL','HDFCLIFE','TECHM','IBULHSGFIN','TITAN','TORNTPHARM','TVSMOTOR','ULTRACEMCO','UPL','VEDL','VOLTAS','ZEEL','INFY','JKCEMENT','L&TFH','AMBUJACEM','M&MFIN','MARUTI','MCDOWELL-N','NAM-INDIA','BIOCON','COLPAL','OBEROIRLTY','CUB','ONGC','PEL','PERSISTENT','PFIZER','DLF','PIIND','HEROMOTOCO','INDUSTOWER','TRENT','ITC','LT','MANAPPURAM','MFSL','MUTHOOTFIN','PAGEIND','SIEMENS','STAR','TATAMOTORS','BANKBARODA','INDIAMART','UBL','DALBHARAT','MCX','INDIACEM','SYNGENE','HAVELLS','HDFCBANK','LICHSGFIN','SAIL','WIPRO','IDFCFIRSTB','IDEA']
+all_shares =[
     '20MICRONS',
     '21STCENMGM',
     '3MINDIA',
@@ -1731,24 +1728,34 @@ shares =[
     'ZYDUSWELL',
     ]
 
+period=st.sidebar.text_input("Enter donchian period like 20,30,50")
+category=st.sidebar.selectbox('category',('fno', 'all'))
+type1=st.sidebar.selectbox('Select type',('Daily Stocks',"Short time"))
+price_limit = st.sidebar.text_input("Enter min price limit for filtering stocks")
 
+if type1=='Daily Stocks':
+    pr="3mo"
+    interval="1d"
+else:
+    pr=st.sidebar.selectbox("time period",("5d","1mo",))
+    interval=st.sidebar.selectbox("candlestick interval",("15m","30m","60m","90m","1h","2h"))
+if category=="fno":
+    shares=fno
+else:
+    shares=all_shares    
 table=st.empty()
-ls=[]
+if st.sidebar.button("Submit"):
+    ls=[]
 #a_file = open("sample.csv", "w")
 #writer = csv.writer(a_file)
 #writer.writerow(["symbol","date"])
-for i in range(len(shares)):
-    x=dc.get_alerts(shares[i],50)
-    ls.append(x)
-    ls=list(filter(lambda x: x, ls))
-    df=pd.DataFrame(ls, columns =['symbol', 'last alert date'])
+    for i in range(len(shares)):
+        x=dc.get_alerts(shares[i],int(period),pr,interval,int(price_limit))
+        ls.append(x)
+        ls=list(filter(lambda x: x, ls))
+        df=pd.DataFrame(ls, columns =['symbol', 'last alert date'])
     #writer.writerow(x)
-    table.dataframe(df)
+        table.dataframe(df)
 
-towrite = io.BytesIO()
-downloaded_file = df.to_excel(towrite, encoding='utf-8', index=False, header=True)
-towrite.seek(0)  # reset pointer
-b64 = base64.b64encode(towrite.read()).decode()  # some strings
-linko= f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="myfilename.xlsx">Download excel file</a>'
-st.markdown(linko, unsafe_allow_html=True)
+
 #a_file.close()    

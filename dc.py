@@ -7,9 +7,9 @@ import get_csv
 
 
 
-def get_alerts(tick,period):
+def get_alerts(tick,period,pr,interval,price_limit):
     tick=str(tick)
-    df = get_csv.get_csv1(tick)
+    df = get_csv.get_csv1(tick,pr,interval)
     period=period
 
     array_date = pd.to_datetime(df.index).date
@@ -18,8 +18,7 @@ def get_alerts(tick,period):
     array_high = np.array(df['High'])
     array_low = np.array(df['Low'])
     #array_volume = np.array(df['No. of Trades'])
-
-
+      
 
 # Function to caculate the high band
     def DchannelUpper(i):
@@ -45,7 +44,13 @@ def get_alerts(tick,period):
                 x = min(array_low[j], x)
         return x
 
+# If 20 period average is less than the limit given, skip processing the stock
 
+    ave_20_closing = np.average(array_close[-20:])
+    if ave_20_closing < price_limit:
+        print (f'Skipping {tick}, since 20 period average {ave_20_closing} is less than the set limit: {price_limit})')
+        return []                         
+    
 # calculating the high band, n = period
 
     array_upper = []
@@ -67,7 +72,7 @@ def get_alerts(tick,period):
     alert=[]
     alert_date=[]
     for i in range(len(array_close)):
-        if array_close[i]>array_upper[i-1]:
+        if array_high[i]>=array_upper[i-1]:
             alert.append(array_close[i])
             alert_date.append(array_date[i])
          
